@@ -8,7 +8,7 @@
 set -euo pipefail
 
 : "${CRMKIT_BASE_URL:?set CRMKIT_BASE_URL (e.g. https://api.crmkit.ai)}"
-: "${CRMKIT_TOKEN:?set CRMKIT_TOKEN (a crmkit bearer token - see crmkit-connect)}"
+: "${CRMKIT_TOKEN:?set CRMKIT_TOKEN (a crmkit bearer token - get one via POST /auth/verify)}"
 outdir="${1:-crmkit-backup-$(date +%Y%m%d-%H%M%S)}"
 mkdir -p "$outdir"
 

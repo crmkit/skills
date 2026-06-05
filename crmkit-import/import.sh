@@ -12,7 +12,7 @@
 set -euo pipefail
 
 : "${CRMKIT_BASE_URL:?set CRMKIT_BASE_URL (e.g. https://api.crmkit.ai)}"
-: "${CRMKIT_TOKEN:?set CRMKIT_TOKEN (a crmkit bearer token - see crmkit-connect)}"
+: "${CRMKIT_TOKEN:?set CRMKIT_TOKEN (a crmkit bearer token - get one via POST /auth/verify)}"
 csv="${1:?usage: import.sh contacts.csv}"
 
 post() { curl -fsS -H "Authorization: Bearer ${CRMKIT_TOKEN}" -X POST "${CRMKIT_BASE_URL}$1" -d "$2"; }

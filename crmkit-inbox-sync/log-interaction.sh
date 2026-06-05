@@ -8,7 +8,7 @@
 set -euo pipefail
 
 : "${CRMKIT_BASE_URL:?set CRMKIT_BASE_URL (e.g. https://api.crmkit.ai)}"
-: "${CRMKIT_TOKEN:?set CRMKIT_TOKEN (a crmkit bearer token - see crmkit-connect)}"
+: "${CRMKIT_TOKEN:?set CRMKIT_TOKEN (a crmkit bearer token - get one via POST /auth/verify)}"
 email="${1:?usage: log-interaction.sh <email> <kind> <summary>}"
 kind="${2:-note}"
 summary="${3:?provide a one-line summary}"

@@ -6,12 +6,12 @@
 #
 #   CRMKIT_BASE_URL=https://api.crmkit.ai CRMKIT_TOKEN=ck_... ./digest.sh
 #
-# Get the token via the crmkit-connect skill (POST /auth/request → /auth/verify).
+# Get the token via the email login (POST /auth/request → POST /auth/verify).
 #
 set -euo pipefail
 
 : "${CRMKIT_BASE_URL:?set CRMKIT_BASE_URL (e.g. https://api.crmkit.ai)}"
-: "${CRMKIT_TOKEN:?set CRMKIT_TOKEN (a crmkit bearer token - see crmkit-connect)}"
+: "${CRMKIT_TOKEN:?set CRMKIT_TOKEN (a crmkit bearer token - get one via POST /auth/verify)}"
 
 get() {
   curl -fsS -H "Authorization: Bearer ${CRMKIT_TOKEN}" "${CRMKIT_BASE_URL}$1"
