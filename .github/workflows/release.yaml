@@ -22,22 +22,20 @@ jobs:
       - name: Package skills
         run: |
           VERSION="${GITHUB_REF_NAME}"          # e.g. v0.1.0
-          BUNDLE="crmkit-skills-${VERSION}"
-          mkdir -p "dist/${BUNDLE}"
+          mkdir -p dist
 
-          # Copy the skill directories (each is a folder with a SKILL.md) plus
-          # the top-level docs, into a versioned bundle directory. CI internals
-          # (.github), VERSION, and git metadata are intentionally excluded.
-          for d in crmkit-*/; do
-            cp -r "$d" "dist/${BUNDLE}/"
-          done
-          cp README.md LICENSE "dist/${BUNDLE}/" 2>/dev/null || true
+          # Flat bundle: the skill folders (each a folder with a SKILL.md) sit at
+          # the zip ROOT, so it extracts straight into an agent's skills directory
+          # (unzip -d ~/.claude/skills/). CI internals (.github), VERSION and git
+          # metadata are excluded.
+          zip -r "dist/crmkit-skills-${VERSION}.zip" crmkit-*/ -x '*/.*'
 
-          # Zip with the version in the archive name, and a checksum.
-          (cd dist && zip -r "${BUNDLE}.zip" "${BUNDLE}")
-          (cd dist && sha256sum "${BUNDLE}.zip" > checksums.txt)
+          # A stable, version-independent copy so docs can link a fixed URL:
+          # releases/latest/download/crmkit-skills.zip (same bytes, no version).
+          cp "dist/crmkit-skills-${VERSION}.zip" "dist/crmkit-skills.zip"
 
-          echo "Packaged dist/${BUNDLE}.zip"
+          (cd dist && sha256sum crmkit-skills*.zip > checksums.txt)
+          echo "Packaged:"; ls -1 dist/*.zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

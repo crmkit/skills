@@ -23,6 +23,43 @@ Skills come in two flavours:
   `crmkit-connect` (which exports `CRMKIT_BASE_URL` / `CRMKIT_TOKEN`) and defer to
   the manual for syntax, so they don't restate the API or go stale.
 
+## Install
+
+Skills are folders an agent loads. Start with **`crmkit-connect`**; the recipe
+skills build on it.
+
+**With [`npx skills`](https://github.com/vercel-labs/skills)** (recommended — one
+command, works across Claude Code, Cursor, and 40+ agents):
+
+```bash
+npx skills add crmkit/skills
+```
+
+It detects your agent and installs all six. Preview them with
+`npx skills add crmkit/skills --list`, grab just one with
+`--skill crmkit-connect`, or add `-g` to install globally (`~/.claude/skills`)
+rather than into the project's `.claude/skills/`.
+
+**Or download the release** and unzip into your skills directory (offline, or to
+pin a version):
+
+```bash
+curl -fsSL https://github.com/crmkit/skills/releases/latest/download/crmkit-skills.zip -o /tmp/crmkit-skills.zip \
+  && unzip -o /tmp/crmkit-skills.zip -d ~/.claude/skills/
+```
+
+A tagged `crmkit-skills-vX.Y.Z.zip` is on every [release](https://github.com/crmkit/skills/releases) for pinning.
+
+**Or from source:**
+
+```bash
+git clone https://github.com/crmkit/skills
+cp -r skills/crmkit-* ~/.claude/skills/
+```
+
+Then run **`crmkit-connect`** first — it authenticates and loads the operating
+manual; every recipe skill builds on it.
+
 ## Skills
 
 | Skill                                           | Kind     | Description                                                                    |
