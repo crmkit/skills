@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://crmkit.ai/icon.svg" alt="crmkit" width="80" height="80" />
+  <img src="https://crmkit.ai/icon-dark.svg" alt="crmkit" width="80" height="80" />
 </p>
 
 <h3 align="center">crmkit Skills</h3>
