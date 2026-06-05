@@ -3,8 +3,9 @@ name: crmkit-backup
 description: Export an entire crmkit workspace to JSON with a paging script - contacts, companies, deals, and activities. Use for backups, data portability, offsite archives, or before a risky bulk change. Cron-able.
 ---
 
-A runnable recipe: snapshot the whole CRM to JSON files. Connect first with
-**crmkit-connect** (it sets `CRMKIT_BASE_URL` / `CRMKIT_TOKEN`).
+A runnable recipe: snapshot the whole CRM to JSON files. Needs `CRMKIT_BASE_URL`
+and a `CRMKIT_TOKEN` (a crmkit bearer token - get one via the email login:
+`POST /auth/request` → `POST /auth/verify`).
 
 ## What it does
 
@@ -22,7 +23,7 @@ Requires `curl` and `jq`. The script lives beside this file as `backup.sh`.
 
 ```bash
 export CRMKIT_BASE_URL=https://api.crmkit.ai
-export CRMKIT_TOKEN=ck_...        # from crmkit-connect
+export CRMKIT_TOKEN=ck_...        # a crmkit bearer token (POST /auth/verify)
 ./backup.sh                       # -> ./crmkit-backup-<timestamp>/
 ./backup.sh /backups/crmkit       # or pick the output dir
 ```

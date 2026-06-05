@@ -13,31 +13,34 @@
 ## Overview
 
 crmkit is an agent-first CRM with no UI - an AI agent drives it over plain HTTP.
-Skills come in two flavours:
-
-- **`crmkit-connect`** - the scene-setter. It connects, authenticates, and loads
-  the server's **operating manual** (`/.well-known/agent.md`), which is the single
-  source of truth for every endpoint. Use it first.
-- **Recipe skills** - runnable automations (curl + a small script) that turn the
-  API into an outcome: a digest, an import, a backup. They build on
-  `crmkit-connect` (which exports `CRMKIT_BASE_URL` / `CRMKIT_TOKEN`) and defer to
-  the manual for syntax, so they don't restate the API or go stale.
+These skills are **runnable recipes** (curl + a small script) that turn the API
+into an outcome: a digest, a CSV import, a backup, an inbox sync. Each reads
+`CRMKIT_BASE_URL` and a `CRMKIT_TOKEN` (a crmkit bearer token - get one via the
+email login `POST /auth/request` → `POST /auth/verify`, or reuse a session from an
+MCP connector) and defers to the server's **operating manual** (`GET /help`, aka
+`/.well-known/agent.md`) for request syntax, so they don't restate the API or go
+stale.
 
 ## Install
 
-Skills are folders an agent loads. Start with **`crmkit-connect`**; the recipe
-skills build on it.
+Skills are folders an agent loads. Each is a self-contained recipe - set
+`CRMKIT_BASE_URL` and a `CRMKIT_TOKEN` to run it (see the Overview above).
 
-**With [`npx skills`](https://github.com/vercel-labs/skills)** (recommended — one
+> **On a chat app (ChatGPT, Claude.ai)?** Nothing to install here - add crmkit as
+> an MCP connector instead (`https://api.crmkit.ai/mcp`); see
+> [Connecting](https://github.com/crmkit/crmkit#mcp-connector). Skills are for
+> coding agents with a filesystem (Claude Code, Codex, Cursor).
+
+**With [`npx skills`](https://github.com/vercel-labs/skills)** (recommended - one
 command, works across Claude Code, Cursor, and 40+ agents):
 
 ```bash
 npx skills add crmkit/skills
 ```
 
-It detects your agent and installs all six. Preview them with
+It detects your agent and installs all four. Preview them with
 `npx skills add crmkit/skills --list`, grab just one with
-`--skill crmkit-connect`, or add `-g` to install globally (`~/.claude/skills`)
+`--skill crmkit-digest`, or add `-g` to install globally (`~/.claude/skills`)
 rather than into the project's `.claude/skills/`.
 
 **Or download the release** and unzip into your skills directory (offline, or to
@@ -57,19 +60,17 @@ git clone https://github.com/crmkit/skills
 cp -r skills/crmkit-* ~/.claude/skills/
 ```
 
-Then run **`crmkit-connect`** first — it authenticates and loads the operating
-manual; every recipe skill builds on it.
+Each recipe defers to the server's manual (`GET /help`) for request syntax, so
+they stay tiny and never go stale.
 
 ## Skills
 
 | Skill                                           | Kind     | Description                                                                    |
 | ----------------------------------------------- | -------- | ------------------------------------------------------------------------------ |
-| [crmkit-connect](crmkit-connect/SKILL.md)       | connect  | Authenticate and load the operating manual. Use first.                         |
 | [crmkit-digest](crmkit-digest/SKILL.md)         | recipe   | One-screen briefing - follow-ups, pipeline, recent activity (`digest.sh`).     |
 | [crmkit-import](crmkit-import/SKILL.md)         | recipe   | Bulk-upsert contacts & companies from a CSV (`import.sh`).                     |
 | [crmkit-backup](crmkit-backup/SKILL.md)         | recipe   | Export the whole CRM to JSON, paging every collection (`backup.sh`).           |
 | [crmkit-inbox-sync](crmkit-inbox-sync/SKILL.md) | recipe   | Turn recent emails into logged activities (`log-interaction.sh` + email tool). |
-| [crmkit-deploy](crmkit-deploy/SKILL.md)         | operator | Install and run the crmkitd server from pre-built binaries.                    |
 
 ## What makes a good recipe skill
 

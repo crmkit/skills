@@ -4,8 +4,9 @@ description: Keep crmkit current by turning recent emails into logged activities
 ---
 
 A recipe that combines your **email tool** with crmkit: scan recent mail and log
-each meaningful thread as an activity on the right contact. Connect first with
-**crmkit-connect** (sets `CRMKIT_BASE_URL` / `CRMKIT_TOKEN`).
+each meaningful thread as an activity on the right contact. Needs
+`CRMKIT_BASE_URL` and a `CRMKIT_TOKEN` (a crmkit bearer token - get one via the
+email login: `POST /auth/request` → `POST /auth/verify`).
 
 This one is agent-driven (the inbox read happens through your email/Gmail tool,
 not curl), with a small helper script for the crmkit side.
@@ -16,7 +17,7 @@ not curl), with a small helper script for the crmkit side.
    days). Group by thread/contact.
 2. **Match** each correspondent's address to a crmkit contact (the helper does
    this - it looks up `/contacts?email=…`). Skip addresses with no contact, or
-   capture them first with **crmkit-capture**.
+   capture them first with `POST /contacts`.
 3. **Summarize** each thread in one line: topic + outcome + next step. Do **not**
    copy full bodies.
 4. **Log** an activity (`kind: email`) against the contact - run the helper, or
